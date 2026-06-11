@@ -1,0 +1,8 @@
+{
+  "name": "VocInsight BI 0611",
+  "description": "VocInsight BI - Single SKU Analysis Dashboard and Voice Response Platform",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
