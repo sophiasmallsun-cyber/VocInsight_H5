@@ -412,10 +412,10 @@ export default function SelfServiceView() {
   const displayCountStr = currentPlatformObj.countStr;
 
   return (
-    <div className="flex flex-col xl:flex-row gap-5 items-start w-full">
-      
+    <div className="flex flex-col xl:flex-row gap-4 md:gap-5 items-start w-full">
+
       {/* LEFT PANEL */}
-      <div className="flex-1 flex flex-col gap-5 w-full min-w-0">
+      <div className="flex-1 flex flex-col gap-4 md:gap-5 w-full min-w-0">
           {/* AI Analysis Banner */}
          <div className="relative bg-[#e6e8fd]/30 rounded-[8px] p-5 border border-[#acb4ff] transition-all">
            <div className="flex items-center gap-[12px] mb-4">
@@ -450,7 +450,7 @@ export default function SelfServiceView() {
            <div className="space-y-5">
               {selectedVoicesArr.map((voice, idx) => (
                 <div key={idx} className="bg-[#fafbfc] rounded-[8px] p-4 space-y-4">
-                  <div className="flex items-center gap-4 text-sm whitespace-nowrap overflow-auto no-scrollbar">
+                  <div className="flex items-center gap-2 md:gap-4 text-xs md:text-sm whitespace-nowrap overflow-auto no-scrollbar">
                     <div className="flex items-center gap-[8px] font-medium text-[#1d2129]">
                       <div className="flex-shrink-0 w-[24px] h-[24px] rounded-full bg-[#e5e6eb] flex items-center justify-center text-[12px] text-[#4e5969]">
                         {voice.user.charAt(0).toUpperCase()}

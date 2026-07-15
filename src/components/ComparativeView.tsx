@@ -478,7 +478,7 @@ export default function ComparativeView() {
         <h2 className="text-base font-bold text-[#1d2129] font-sans">Competitor Benchmark</h2>
 
         <div className="relative border border-[#e5e6eb] rounded-md overflow-hidden bg-white">
-          <div className="flex items-stretch divide-x divide-[#e5e6eb]">
+          <div className="flex flex-col lg:flex-row items-stretch divide-y lg:divide-y-0 lg:divide-x divide-[#e5e6eb]">
             
             {/* Loop through actual compared products */}
             {compProducts.map((p, idx) => {
@@ -674,7 +674,7 @@ export default function ComparativeView() {
         <h2 className="text-base font-bold text-[#1d2129] font-sans">Pain Scenarios</h2>
         
         <div className="border border-[#e5e6eb] rounded-md overflow-hidden bg-white">
-          <div className="flex items-stretch divide-x divide-[#e5e6eb]">
+          <div className="flex flex-col lg:flex-row items-stretch divide-y lg:divide-y-0 lg:divide-x divide-[#e5e6eb]">
             
             {/* Generate columns for each configured product */}
             {compProducts.map((p) => {
@@ -745,7 +745,7 @@ export default function ComparativeView() {
         <h2 className="text-base font-bold text-[#1d2129] font-sans">Latent Needs</h2>
         
         <div className="border border-[#e5e6eb] rounded-md overflow-hidden bg-white">
-          <div className="flex items-stretch divide-x divide-[#e5e6eb]">
+          <div className="flex flex-col lg:flex-row items-stretch divide-y lg:divide-y-0 lg:divide-x divide-[#e5e6eb]">
             
             {compProducts.map((p) => {
               const baseNeeds = LATENT_NEEDS_BY_BRAND[p.brand] || LATENT_NEEDS_BY_BRAND.Hisense;
@@ -813,7 +813,7 @@ export default function ComparativeView() {
           <div className="flex flex-col divide-y divide-[#e5e6eb]">
             
             {/* Row 1: Header Row */}
-            <div className="flex items-stretch divide-x divide-[#e5e6eb]">
+            <div className="flex flex-col lg:flex-row items-stretch divide-y lg:divide-y-0 lg:divide-x divide-[#e5e6eb]">
               {compProducts.map((p) => (
                 <div key={p.id} className="flex-1 min-w-[240px] px-4 py-2 bg-slate-50 text-xs font-semibold text-gray-500 tracking-wider text-center">
                   {p.brand} ({p.model})
@@ -827,7 +827,7 @@ export default function ComparativeView() {
             </div>
 
             {/* Row 2: Product Advantages Row */}
-            <div className="flex items-stretch divide-x divide-[#e5e6eb]">
+            <div className="flex flex-col lg:flex-row items-stretch divide-y lg:divide-y-0 lg:divide-x divide-[#e5e6eb]">
               {compProducts.map((p) => {
                 const expObj = EXPERIENCE_BY_BRAND[p.brand] || EXPERIENCE_BY_BRAND.Hisense;
                 return (
@@ -872,7 +872,7 @@ export default function ComparativeView() {
             </div>
 
             {/* Row 3: Product Disadvantages Row */}
-            <div className="flex items-stretch divide-x divide-[#e5e6eb]">
+            <div className="flex flex-col lg:flex-row items-stretch divide-y lg:divide-y-0 lg:divide-x divide-[#e5e6eb]">
               {compProducts.map((p) => {
                 const expObj = EXPERIENCE_BY_BRAND[p.brand] || EXPERIENCE_BY_BRAND.Hisense;
                 return (
@@ -923,7 +923,7 @@ export default function ComparativeView() {
         <h2 className="text-base font-bold text-[#1d2129] font-sans">Usage Scenarios</h2>
         
         <div className="border border-[#e5e6eb] rounded-md overflow-hidden bg-white">
-          <div className="flex items-stretch divide-x divide-[#e5e6eb]">
+          <div className="flex flex-col lg:flex-row items-stretch divide-y lg:divide-y-0 lg:divide-x divide-[#e5e6eb]">
             
             {compProducts.map((p) => {
               const baseScenarios = USAGE_SCENARIOS_BY_BRAND[p.brand] || USAGE_SCENARIOS_BY_BRAND.Hisense;

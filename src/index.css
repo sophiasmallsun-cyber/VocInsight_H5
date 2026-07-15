@@ -28,3 +28,28 @@
   position: relative;
 }
 
+/* Mobile safe area bottom padding */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 8px);
+}
+
+/* Hide scrollbar for scrollable areas */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Mobile tap highlight removal */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Smooth mobile interactions */
+@media (max-width: 1023px) {
+  input, select, textarea, button {
+    font-size: 16px !important; /* Prevent iOS zoom on focus */
+  }
+}

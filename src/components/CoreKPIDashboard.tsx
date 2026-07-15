@@ -106,8 +106,8 @@ export default function CoreKPIDashboard() {
 
   return (
     <div className="flex flex-col gap-4 w-full h-full min-w-0">
-      <div className="border border-[#e5e6eb] rounded-[4px] overflow-hidden overflow-x-auto">
-        <table className="w-full text-left border-collapse text-[13px] font-sans whitespace-nowrap min-w-[900px]">
+      <div className="border border-[#e5e6eb] rounded-[4px] overflow-hidden overflow-x-auto -mx-3 md:mx-0">
+        <table className="w-full text-left border-collapse text-[12px] md:text-[13px] font-sans whitespace-nowrap min-w-[750px] md:min-w-[900px]">
           <thead className="bg-[#f2f3f5] text-[#4e5969] font-medium border-b border-[#e5e6eb]">
             <tr>
               <th className="py-3 px-4 font-medium" width="25%">{t('Country / Brand / Series / Product/domain')}</th>
@@ -336,7 +336,7 @@ export default function CoreKPIDashboard() {
         </div>
 
         {/* SVG Chart Drawing Canvas */}
-        <div className="min-w-[700px] h-[320px] relative">
+        <div className="min-w-[320px] md:min-w-[700px] h-[320px] relative">
           
           {/* Left Y Axis (Volume 0 to 5) */}
           <div className="absolute left-0 top-[30px] bottom-[70px] w-8 flex flex-col justify-between text-[12px] font-sans text-[#86909c] text-right pr-2">

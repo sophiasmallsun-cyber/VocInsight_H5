@@ -45,7 +45,7 @@ export default function ConcernBarChart({
       <div className="flex flex-row relative select-none flex-grow">
         
         {/* 1. Left Y-Axis: Labels Column */}
-        <div className="w-[120px] sm:w-[170px] shrink-0 flex flex-col justify-between py-2 pr-3.5 gap-4">
+        <div className="w-[90px] sm:w-[120px] md:w-[170px] shrink-0 flex flex-col justify-between py-2 pr-2 md:pr-3.5 gap-4">
           {data.map((item) => {
             const isClickable = !!onItemClick;
             const isSelected = selectedItem === item.name;

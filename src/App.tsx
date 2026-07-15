@@ -31,7 +31,12 @@ import {
   Grid,
   Sparkles,
   RefreshCw,
-  FolderOpen
+  FolderOpen,
+  Menu,
+  Tv,
+  BarChart3,
+  PieChart,
+  Settings
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { FilterState, MetricCardData, IssueData, CommentDetail } from './types';
@@ -57,12 +62,14 @@ export default function App() {
   const { language, toggleLanguage, t } = useContext(LanguageContext);
   // ----- Applet Context & Sidebar States -----
   const [isSidebarExpanded, setIsSidebarExpanded] = useState<boolean>(true);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false);
   const [isProductInsightExpanded, setIsProductInsightExpanded] = useState<boolean>(true);
   const [isVoiceClosedLoopExpanded, setIsVoiceClosedLoopExpanded] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<'single_sku' | 'comparative' | 'self_service' | 'core_kpi'>('single_sku');
   const [activeSKUTab, setActiveSKUTab] = useState<string>('metrics');
   const [activeMenu, setActiveMenu] = useState<string>('Single SKU Analysis');
   const [openTabs, setOpenTabs] = useState<('single_sku' | 'comparative' | 'self_service' | 'core_kpi')[]>(['single_sku']);
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState<boolean>(false);
 
   const openTab = (tab: 'single_sku' | 'comparative' | 'self_service' | 'core_kpi') => {
     if (!openTabs.includes(tab)) {
@@ -72,6 +79,8 @@ export default function App() {
     if (tab === 'single_sku') setActiveMenu('Single SKU Analysis');
     else if (tab === 'comparative') setActiveMenu('Comparative Analysis');
     else if (tab === 'self_service') setActiveMenu('Self-service analytics');
+    // Close mobile sidebar after navigation
+    setIsMobileSidebarOpen(false);
   };
 
   const closeTab = (tab: 'single_sku' | 'comparative' | 'self_service' | 'core_kpi', e: React.MouseEvent) => {
@@ -636,9 +645,18 @@ export default function App() {
     <div className="min-h-screen text-[#333333] font-sans antialiased flex flex-col bg-[#F5F7FA]">
       
       {/* 1、顶部导航栏的样式参考代码调整 */}
-      <div className="bg-white border-b border-[#e5e6eb] flex items-center justify-between py-[8px] px-6 h-[52px] shrink-0 relative z-50 shadow-xs" data-name="Topmenu">
+      <div className="bg-white border-b border-[#e5e6eb] flex items-center justify-between py-[8px] px-3 md:px-6 h-[52px] shrink-0 relative z-50 shadow-xs" data-name="Topmenu">
+        {/* Mobile hamburger button */}
+        <button
+          className="lg:hidden flex items-center justify-center size-[36px] rounded-md hover:bg-gray-100 mr-1 shrink-0"
+          onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
+          aria-label="Toggle menu"
+        >
+          <Menu size={20} className="text-[#4e5969]" />
+        </button>
+
         {/* LOGO AREA */}
-        <div className="content-stretch flex gap-[8px] items-center px-4 relative shrink-0" data-name="logo">
+        <div className="content-stretch flex gap-[8px] items-center px-2 md:px-4 relative shrink-0" data-name="logo">
           <div className="relative rounded-[4px] shrink-0" data-name="icon-wrapper">
             <div className="flex flex-col items-center justify-center overflow-clip rounded-[inherit] size-full">
               <div className="content-stretch flex flex-col items-center justify-center relative size-full">
@@ -718,17 +736,37 @@ export default function App() {
           )}
         </AnimatePresence>
 
+        {/* Mobile sidebar backdrop */}
+        {isMobileSidebarOpen && (
+          <div
+            className="lg:hidden fixed inset-0 bg-black/50 z-40"
+            onClick={() => setIsMobileSidebarOpen(false)}
+          />
+        )}
+
         {/* LEFT SIDEBAR PANEL (Width fixed, expandable) */}
         <aside
           id="side_layout_nav"
-          className={`bg-[#f7f8fa] flex flex-col shrink-0 transition-all duration-300 relative z-30 ${
+          className={`bg-[#f7f8fa] flex flex-col shrink-0 transition-all duration-300 z-40 ${
             isSidebarExpanded ? 'w-[220px]' : 'w-[56px]'
+          } ${
+            // Mobile: fixed overlay, hidden by default
+            'fixed inset-y-0 left-0 lg:relative lg:flex'
+          } ${
+            isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
           }`}
         >
           {/* LOGO AREA Collapsed to simple header */}
 
         {/* SIDE BAR CONTENT */}
         <div className="bg-[#f7f8fa] flex-1 min-h-px relative w-full overflow-y-auto" data-name="Side menuA">
+          {/* Mobile close button */}
+          <button
+            className="lg:hidden absolute top-3 right-3 z-10 p-1.5 rounded-md hover:bg-gray-200 text-[#4e5969]"
+            onClick={() => setIsMobileSidebarOpen(false)}
+          >
+            <X size={18} />
+          </button>
           <div className={`content-stretch flex flex-col gap-[4px] items-start pb-[20px] pt-[8px] relative size-full ${isSidebarExpanded ? 'px-[12px]' : 'px-[4px]'}`}>
             
             {/* GROUP 1: Product Insight */}
@@ -971,9 +1009,9 @@ export default function App() {
 
       {/* RIGHT CONTAINER: TOP NAV + INNER CONTENT */}
       <div ref={listRef} className="flex-grow flex flex-col min-w-0 h-full overflow-y-auto bg-white">
-        
+
         {/* 2、页签的位置在main的顶部，样式参考代码调整 */}
-        <div className="bg-[#f7f8fa] content-stretch flex items-end sticky top-0 z-40 w-full h-[36px] pt-[8px] pr-6" data-name="Tabbar-wrapper">
+        <div className="bg-[#f7f8fa] content-stretch flex items-end sticky top-0 z-40 w-full h-[36px] pt-[8px] pr-2 md:pr-6 overflow-x-auto no-scrollbar" data-name="Tabbar-wrapper">
           <div className="content-stretch flex items-end relative shrink-0 gap-1 h-[28px]" data-name="画框">
             {openTabs.includes('single_sku') && (
               <div 
@@ -1104,7 +1142,7 @@ export default function App() {
         </div>
 
         {/* ROUTED CONTENT VIEW */}
-        <main className="p-6 space-y-6 max-w-[1600px] w-full mx-auto">
+        <main className="p-3 md:p-6 space-y-4 md:space-y-6 max-w-[1600px] w-full mx-auto">
           
           {/* PAGE SUBTITLE */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
@@ -1129,7 +1167,7 @@ export default function App() {
                 <div className="flex flex-col xl:flex-row gap-4 justify-between items-stretch">
                   
                   {/* Left filter inputs layout */}
-                  <div className="w-full flex-grow grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 text-xs content-start">
+                  <div className="w-full flex-grow grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-3 text-xs content-start">
                     
                     {/* 1. Time Select Options & Date Inputs */}
                     <div className="relative flex items-center h-[32px] rounded-[4px] border border-[#e5e6eb] bg-white text-[13px] text-[#1d2129]">
@@ -1491,7 +1529,7 @@ export default function App() {
                   <div className="hidden xl:block w-px bg-[#e5e6eb] h-auto shrink-0 self-stretch" />
 
                   {/* Right side buttons panel */}
-                  <div className="content-stretch flex flex-row xl:flex-col gap-[12px] items-start relative shrink-0 w-full xl:w-[99px] pt-2 xl:pt-0">
+                  <div className="content-stretch flex flex-row xl:flex-col gap-[8px] md:gap-[12px] items-start relative shrink-0 w-full xl:w-[99px] pt-2 xl:pt-0">
                     
                     {/* Search button */}
                     <div
@@ -1579,7 +1617,7 @@ export default function App() {
 
                   {/* SECTION 2: KEY METRICS 4-CARDS (区块2：Key Metrics 4等分指标卡片) */}
                   <div id="metrics_sec" className="scroll-mt-[100px]">
-                  <section id="metrics_cards_grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                  <section id="metrics_cards_grid" className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-4">
                 {metrics.map((card) => {
                   let statusBg = '';
                   let statusText = '';
@@ -1755,7 +1793,8 @@ export default function App() {
                   }}
                 />
                 <div className="w-full text-sm border border-gray-200 bg-white rounded-lg overflow-hidden">
-                  <div className="grid grid-cols-[50px_1fr_2fr_150px_100px_80px] py-3 bg-gray-50 text-gray-600 font-medium border-b border-gray-200">
+                  <div className="overflow-x-auto -mx-3 md:mx-0">
+                  <div className="grid grid-cols-[50px_1fr_2fr_150px_100px_80px] py-3 bg-gray-50 text-gray-600 font-medium border-b border-gray-200 min-w-[700px]">
                     <div className="pl-4">No.</div>
                     <div>Issue Type</div>
                     <div>Detailed Description</div>
@@ -1766,7 +1805,7 @@ export default function App() {
                   {filteredProductIssues.map((row) => (
                     <div
                       key={row.no}
-                      className="grid grid-cols-[50px_1fr_2fr_150px_100px_80px] py-4 border-b border-gray-100 hover:bg-gray-50/50 items-center text-xs"
+                      className="grid grid-cols-[50px_1fr_2fr_150px_100px_80px] py-4 border-b border-gray-100 hover:bg-gray-50/50 items-center text-xs min-w-[700px]"
                     >
                       <div className="pl-4 text-gray-500">{row.no}</div>
                       <div className="text-gray-800 pr-4 font-normal">{row.issueType}</div>
@@ -1810,6 +1849,7 @@ export default function App() {
                       No matching product issues found. Try widening your filters.
                     </div>
                   )}
+                  </div>
                 </div>
               </div>
 
@@ -1916,7 +1956,8 @@ export default function App() {
                   </div>
                 </div>
                 <div className="w-full text-sm border border-gray-200 bg-white rounded-lg overflow-hidden">
-                  <div className="grid grid-cols-[50px_1fr_2fr_150px_100px_80px] py-3 bg-gray-50 text-gray-600 font-medium border-b border-gray-200">
+                  <div className="overflow-x-auto -mx-3 md:mx-0">
+                  <div className="grid grid-cols-[50px_1fr_2fr_150px_100px_80px] py-3 bg-gray-50 text-gray-600 font-medium border-b border-gray-200 min-w-[700px]">
                     <div className="pl-4">No.</div>
                     <div>Issue Type</div>
                     <div>Detailed Description</div>
@@ -1927,7 +1968,7 @@ export default function App() {
                   {filteredPotentialReqs.map((row) => (
                     <div
                       key={row.no}
-                      className="grid grid-cols-[50px_1fr_2fr_150px_100px_80px] py-4 border-b border-gray-100 hover:bg-gray-50/50 items-center text-xs"
+                      className="grid grid-cols-[50px_1fr_2fr_150px_100px_80px] py-4 border-b border-gray-100 hover:bg-gray-50/50 items-center text-xs min-w-[700px]"
                     >
                       <div className="pl-4 text-gray-500">{row.no}</div>
                       <div className="text-gray-800 pr-4 font-normal">{row.issueType}</div>
@@ -1964,6 +2005,7 @@ export default function App() {
                       No matching requirements found. Try widening your filters.
                     </div>
                   )}
+                  </div>
                 </div>
               </div>
 
@@ -1997,7 +2039,7 @@ export default function App() {
                 />
 
                 {/* Sub-block 2: Lv2 & Lv3 Concerns Dual Columns (左右双栏并列) */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
                   {/* Left Column: Lv2 Concern */}
                   <ConcernBarChart
                     title="Lv2 Concern"
@@ -2064,8 +2106,8 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="overflow-x-auto max-h-[640px]">
-                    <table className="w-full text-left text-xs border-collapse">
+                  <div className="overflow-x-auto max-h-[640px] -mx-3 md:mx-0">
+                    <table className="w-full text-left text-xs border-collapse min-w-[900px] md:min-w-0">
                       <thead className="bg-[#f7f8fa] text-[#1d2129] font-medium sticky top-0 z-10">
                         <tr className="border-b border-[#e5e6eb]">
                           <th className="p-3 w-12 text-center text-[#1d2129] font-medium text-[13px]">No.</th>
@@ -2226,7 +2268,7 @@ export default function App() {
                 </div>
 
                 {/* ROW 1: Usage scenario + Placement location + Installation method */}
-                <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
                   
                   {/* Vertical bar: Usage Scenario */}
                   <div className="bg-white rounded-lg p-5 border border-[#E5E7EB] shadow-xs flex flex-col justify-between">
@@ -2387,7 +2429,7 @@ export default function App() {
                 </div>
 
                 {/* ROW 2: External Device Connected + External Device Name */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
                   
                   {/* Left block: External Device Connected (Doughnut with center % text) */}
                   <div className="bg-white rounded-lg p-5 border border-[#E5E7EB] shadow-xs flex flex-col justify-between">
@@ -2491,6 +2533,40 @@ export default function App() {
       </div>
 
     </div> {/* closes Main body wrapper layout */}
+
+      {/* ====== MOBILE BOTTOM TAB NAVIGATION ====== */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-[#e5e6eb] flex items-stretch z-50 safe-bottom">
+        {[
+          { key: 'single_sku', label: t('Single SKU Analysis'), icon: '🔍' },
+          { key: 'comparative', label: t('Comparative Analysis'), icon: '⚖️' },
+          { key: 'self_service', label: t('Self-service analytics'), icon: '🤖' },
+          { key: 'core_kpi', label: t('Core KPI Dashboard'), icon: '📊' },
+        ].map((item) => (
+          <button
+            key={item.key}
+            onClick={() => {
+              setActiveTab(item.key as any);
+              if (item.key === 'single_sku') setActiveMenu('Single SKU Analysis');
+              else if (item.key === 'comparative') setActiveMenu('Comparative Analysis');
+              else if (item.key === 'self_service') setActiveMenu('Self-service analytics');
+              else setActiveMenu('Core KPI Dashboard');
+              if (!openTabs.includes(item.key as any)) {
+                setOpenTabs(prev => [...prev, item.key as any]);
+              }
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex-1 flex flex-col items-center justify-center py-1.5 px-1 text-[10px] font-medium transition-colors ${
+              activeTab === item.key ? 'text-[#00aaa6]' : 'text-[#86909c]'
+            }`}
+          >
+            <span className="text-lg leading-none mb-0.5">{item.icon}</span>
+            <span className="truncate max-w-full leading-tight">{item.label}</span>
+          </button>
+        ))}
+      </nav>
+
+      {/* Spacer for mobile bottom nav */}
+      <div className="lg:hidden h-16" />
 
       {/* REACTION POPUP DIALOG MODAL (弹窗规范: 居中模态弹窗，带遮罩层、右上角关闭按钮，展示用户原始评论明细) */}
       <AnimatePresence>
